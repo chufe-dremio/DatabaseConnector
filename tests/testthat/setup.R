@@ -10,6 +10,7 @@ if (Sys.getenv("DONT_DOWNLOAD_JDBC_DRIVERS", "") != "TRUE") {
   downloadJdbcDrivers("redshift")
   downloadJdbcDrivers("spark")
   downloadJdbcDrivers("snowflake")
+  downloadJdbcDrivers("dremio")
 
   withr::defer(
     {

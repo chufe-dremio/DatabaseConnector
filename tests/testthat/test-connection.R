@@ -170,6 +170,23 @@ test_that("Open and close connection using connection strings with embedded user
   # connection <- connect(details)
   # expect_true(inherits(connection, "DatabaseConnectorConnection"))
   # expect_true(disconnect(connection))
+  
+  # Dremio --------------------------------------------------
+  # Disable Dremio unit tests until we have a testing server
+  # connectionString <- sprintf(
+  #   "%s;UID=%s;PWD=%s",
+  #   Sys.getenv("CDM5_DREMIO_CONNECTION_STRING"),
+  #   Sys.getenv("CDM5_DREMIO_USER"),
+  #   URLdecode(Sys.getenv("CDM5_DREMIO_PASSWORD"))
+  # )
+  # 
+  # details <- createConnectionDetails(
+  #   dbms = "dremio",
+  #   connectionString = connectionString
+  # )
+  # connection <- connect(details)
+  # expect_true(inherits(connection, "DatabaseConnectorConnection"))
+  # expect_true(disconnect(connection))
 })
 
 test_that("Open and close connection using connection strings with separate user and pw", {
@@ -260,6 +277,18 @@ test_that("Open and close connection using connection strings with separate user
   #   connectionString = Sys.getenv("CDM5_SNOWFLAKE_CONNECTION_STRING"),
   #   user = Sys.getenv("CDM5_SNOWFLAKE_USER"),
   #   password = URLdecode(Sys.getenv("CDM5_SNOWFLAKE_PASSWORD"))
+  # )
+  # connection <- connect(details)
+  # expect_true(inherits(connection, "DatabaseConnectorConnection"))
+  # expect_true(disconnect(connection))
+  
+  # Dremio --------------------------------------------------
+  # Disable Dremio unit tests until we have a testing server
+  # details <- createConnectionDetails(
+  #   dbms = "dremio",
+  #   connectionString = Sys.getenv("CDM5_DREMIO_CONNECTION_STRING"),
+  #   user = Sys.getenv("CDM5_DREMIO_USER"),
+  #   password = URLdecode(Sys.getenv("CDM5_DREMIO_PASSWORD"))
   # )
   # connection <- connect(details)
   # expect_true(inherits(connection, "DatabaseConnectorConnection"))

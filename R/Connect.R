@@ -31,6 +31,7 @@ checkIfDbmsIsSupported <- function(dbms) {
     "sqlite extended",
     "spark",
     "snowflake",
+    "dremio",
     "synapse",
     "duckdb"
   )
@@ -315,6 +316,8 @@ connectUsingJdbc <- function(connectionDetails) {
     return(connectSpark(connectionDetails))
   } else if (dbms == "snowflake") {
     return(connectSnowflake(connectionDetails))
+  } else if (dbms == "dremio") {
+    return(connectDremio(connectionDetails))
   } else {
     abort("Something went wrong when trying to connect to ", dbms)
   }
@@ -705,6 +708,26 @@ connectSnowflake <- function(connectionDetails) {
       password = connectionDetails$password(),
       dbms = connectionDetails$dbms,
       "CLIENT_TIMESTAMP_TYPE_MAPPING"="TIMESTAMP_NTZ"
+    )
+  }
+  return(connection)
+}
+
+connectDremio <- function(connectionDetails) {
+  inform("Connecting using Dremio driver")
+  jarPath <- findPathToJar("^dremio-jdbc-driver-.*\\.jar$", connectionDetails$pathToDriver)
+  driver <- getJbcDriverSingleton("com.dremio.jdbc.Driver", jarPath)
+  if (is.null(connectionDetails$connectionString()) || connectionDetails$connectionString() == "") {
+    abort("Error: Connection string required for connecting to Dremio")
+  }
+  if (is.null(connectionDetails$user())) {
+    connection <- connectUsingJdbcDriver(driver, connectionDetails$connectionString(), dbms = connectionDetails$dbms)
+  } else {
+    connection <- connectUsingJdbcDriver(driver,
+                                         connectionDetails$connectionString(),
+                                         user = connectionDetails$user(),
+                                         password = connectionDetails$password(),
+                                         dbms = connectionDetails$dbms
     )
   }
   return(connection)
