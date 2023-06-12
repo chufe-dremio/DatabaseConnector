@@ -107,7 +107,6 @@ getTableNames <- function(connection, databaseSchema = NULL, cast = "lower") {
   checkmate::assertCharacter(databaseSchema, len = 1, null.ok = TRUE, add = errorMessages)
   checkmate::assertChoice(cast, c("upper", "lower", "none"), add = errorMessages)
   checkmate::reportAssertions(collection = errorMessages)
-  # TODO add Dremio, discuss with Avit. What is this good for? Why is the connection check not using: dbms(conn) == "spark" ?
   if (is.null(databaseSchema)) {
     tableNames <- DBI::dbListTables(connection)
   } else if (is(connection, "DatabaseConnectorConnection")) {

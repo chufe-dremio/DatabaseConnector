@@ -96,7 +96,6 @@ ctasHack <- function(connection, sqlTableName, tempTable, sqlFieldNames, sqlData
     batchSize <- 1000
   }
   mergeSize <- 300
-
   if (any(tolower(names(data)) == "subject_id")) {
     distribution <- "--HINT DISTRIBUTE_ON_KEY(SUBJECT_ID)\n"
   } else if (any(tolower(names(data)) == "person_id")) {
@@ -139,7 +138,7 @@ ctasHack <- function(connection, sqlTableName, tempTable, sqlFieldNames, sqlData
         MARGIN = 1,
         FUN = formatRow,
         aliases = varAliases,
-        castValues = dbms(connection) %in% c("bigquery", "hive"),
+        castValues = dbms(connection) %in% c("bigquery", "hive", "dremio"),
         sqlDataTypes = sqlDataTypes
       )),
       collapse = "\nUNION ALL\nSELECT "
