@@ -257,7 +257,8 @@ insertTable.default <- function(connection,
   useBulkLoad <- (bulkLoad && dbms %in% c("hive", "redshift") && createTable) ||
     (bulkLoad && dbms %in% c("pdw", "postgresql") && !tempTable)
   useCtasHack <- dbms %in% c("pdw", "redshift", "bigquery", "hive") && createTable && nrow(data) > 0 && !useBulkLoad
-  useSingleInsert <- dbms %in% c("dremio") && createTable && nrow(data) > 0 && !useBulkLoad
+  # useSingleInsert <- dbms %in% c("dremio") && createTable && nrow(data) > 0 && !useBulkLoad
+  useSingleInsert <- dbms %in% c("dremio") && nrow(data) > 0 && !useBulkLoad
   if (dbms == "bigquery" && useCtasHack && is.null(tempEmulationSchema)) {
     abort("tempEmulationSchema is required to use insertTable with bigquery when inserting into a new table")
   }

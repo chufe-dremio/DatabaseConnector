@@ -322,10 +322,14 @@ lowLevelExecuteSql.default <- function(connection, sql) {
   statement <- rJava::.jcall(connection@jConnection, "Ljava/sql/Statement;", "createStatement")
   on.exit(rJava::.jcall(statement, "V", "close"))
   hasResultSet <- rJava::.jcall(statement, "Z", "execute", as.character(sql), check = FALSE)
-  
+
   if (dbms(connection) == "bigquery") {
     delayIfNecessaryForDdl(sql)
     delayIfNecessaryForInsert(sql)
+  }
+  if (dbms(connection) == "dremio") {
+    # TODO Connection is closed too quickly. Unsure how to fix this properly. The BigQuery approach does not work.
+    Sys.sleep(1)
   }
   
   rowsAffected <- 0
